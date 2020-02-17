@@ -2,7 +2,7 @@
 
 function actionIndex()
 {
-    $books = Get('Catalog', 'getBooksCatalog');
+    $books = Get('Catalog');
 
     $genres = All(['table' => 'genres']);
     $authors = All(['table' => 'authors']);

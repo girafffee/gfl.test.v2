@@ -19,17 +19,44 @@ function actionView($params)
     }
 }
 
+function actionCreateBook()
+{
+    if(!empty($_POST))
+        actionModel('Books', 'createBook');
+
+    $genres = Get('Genres', 'getAllGenres');
+    $authors = Get('Authors', 'getAllAuthors');
+
+    return render ('admin/book.create.tpl.php', [
+        'genres'    => $genres,
+        'authors'   => $authors,
+    ]);
+
+}
+
 function viewBooks()
 {
-    echo 'viewBooks'; die;
+    $books = Get('Books', 'getAllBooks');
+
+    return render ('admin/books.tpl.php', [
+        'books' => $books
+    ]);
 }
 
 function viewAuthors()
 {
-    echo 'viewAuthors'; die;
+    $authors = Get('Authors', 'getAllAuthors');
+
+    return render ('admin/authors.tpl.php', [
+        'authors' => $authors
+    ]);
 }
 
 function viewGenres()
 {
-    echo 'viewGenres'; die;
+    $genres = Get('Genres', 'getAllGenres');
+
+    return render ('admin/genres.tpl.php', [
+        'genres' => $genres
+    ]);
 }

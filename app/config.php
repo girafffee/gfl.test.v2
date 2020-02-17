@@ -13,6 +13,9 @@ define('DEFAULT_ACTION', 'index');
 
 define('ACTION_PREFIX', 'action');
 
+define('BOOK_STATUS_DELETED', 'deleted');
+define('BOOK_STATUS_ACTIVE', 'active');
+
 /**
  * <DATABASE>
  */

@@ -6,7 +6,7 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="<?=route('catalog')?>">Каталог</a>
-            <a class="nav-item nav-link" href="#">Админ панель</a>
+            <a class="nav-item nav-link" href="<?=route('admin')?>">Админ панель</a>
         </div>
     </div>
 </nav>

@@ -186,11 +186,8 @@ function Get($model = '', $queryFunction = '', $params = array())
 {
     global $query;
 
-    if(incModel($model))
-    {
-        if(function_exists($queryFunction))
-            $queryFunction($params);
-    }
+    if(!actionModel($model, $queryFunction, $params))
+        return array();
 
     $sqlOrderOptions = ['select', 'from', 'join', 'where', 'group_by', 'having', 'order_by'];
 
@@ -203,6 +200,21 @@ function Get($model = '', $queryFunction = '', $params = array())
     $sql .= '; ';
 
     return fetchAll($sql);
+}
+
+function actionModel($model, $queryFunction = '', $params = array())
+{
+    if(incModel($model))
+    {
+        if(function_exists($queryFunction))
+            $queryFunction($params);
+
+        // основные параметры модели, едины для все функций
+        if(function_exists($model))
+            $model();
+
+        return true;
+    }
 }
 
 /**
@@ -229,8 +241,8 @@ function incModel($name)
 function requiredOptions()
 {
     global $query;
-    if(!array_key_exists('select', $query))
-        select();
+    /*if(!array_key_exists('select', $query))
+        select();*/
 
     setLikes();
 
