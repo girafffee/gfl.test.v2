@@ -60,4 +60,11 @@ function getPathTpl($tplName)
         return $path;
 }
 
+function redirect($nameRoute, $args = array())
+{
+    $url = route($nameRoute, $args);
+    header("Location: " . SITE_URL . $url);
+    exit;
+}
+
 includeControllers();

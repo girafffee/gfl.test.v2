@@ -31,7 +31,7 @@
                            title="Edit" class="text-success"><i class="fas fa-edit"></i></a>
 
                         <a href="javascript:void(0)" title="Delete" class="text-success"
-                           onclick="checkDelete(<?=$book['id']?>, '<?=$book['title']?>')">
+                           onclick="deleteAjax(<?=$book['id']?>, '<?=$book['title']?>', 'book', successDeleteBook)">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
@@ -39,6 +39,11 @@
             <?php endforeach; ?>
             </tbody>
         </table>
+        <?php if($count == 0): ?>
+            <div class="alert alert-info text-center" role="alert">
+                <h5>Все книги удалены</h5>
+            </div>
+        <?php endif; ?>
 
         <h3 class="text-secondary d-flex justify-content-center">Удаленные книги &nbsp;<i class="text-danger fas fa-minus-circle"></i></h3>
         <table class="table table-hover">
@@ -59,8 +64,11 @@
                     <td><?=$book['title']?></td>
                     <td><?=$book['created_at']?></td>
                     <td>
+                        <form action="" id="form">
+                            <input type="hidden" name="id" value="<?=$book['id']?>">
+                        </form>
                         <a href="javascript:void(0)" title="Retrieve" class="text-success"
-                           onclick="checkRetrieve(<?=$book['id']?>, '<?=$book['title']?>')">
+                           onclick="objectAction('book', 'retrieve', successDeleteBook)">
                             <i class="fas fa-plus-circle"></i>
                         </a>
                     </td>

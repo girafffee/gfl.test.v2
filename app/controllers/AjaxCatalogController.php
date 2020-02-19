@@ -28,7 +28,7 @@ function actionAjaxSearchBooks()
     $genres = All(['table' => 'genres']);
     $authors = All(['table' => 'authors']);
 
-    $content['html'] = render('ajax/books.tpl.php', [
+    $content['html'] = render('ajax/catalog.tpl.php', [
         'authors' => $authors,
         'genres' => $genres,
         'books' => $books

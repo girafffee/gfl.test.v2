@@ -1,10 +1,13 @@
 <?php
 
-function Catalog()
+/**
+ * @param bool $position
+ * TRUE - определение изначального массива настроек <query>
+ * FALSE - построение запроса <buildQuery()>
+ */
+function Catalog($position = true)
 {
-    global $query;
-
-    buildQuery(array_merge([
+    mainFuncModel([
         'select' => [
             'id'            => 'b.id',
             'title'         => 'b.title',
@@ -18,16 +21,15 @@ function Catalog()
         ],
         'table' => 'book_genres bg',
         'simpleJoin' => '
-            LEFT JOIN books b ON bg.book_id = b.id
-                LEFT JOIN genres g ON bg.genre_id = g.id
-                LEFT JOIN book_authors ba ON ba.book_id = b.id
-                LEFT JOIN authors a ON ba.author_id = a.id
-        ',
+                    LEFT JOIN books b ON bg.book_id = b.id
+                    LEFT JOIN genres g ON bg.genre_id = g.id
+                    LEFT JOIN book_authors ba ON ba.book_id = b.id
+                    LEFT JOIN authors a ON ba.author_id = a.id
+                ',
         'whereEqually' => [['b.status', 'active']],
         'groupBy' => 'bg.book_id',
         'orderBy' => 'b.title'
-    ], $query));
-
+    ], $position);
 }
 
 /**

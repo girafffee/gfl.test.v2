@@ -130,9 +130,7 @@ function callActionBy($route)
 
         if($action && function_exists($action))
             return $action($params);
-
     }
-
     return NULL;
 }
 

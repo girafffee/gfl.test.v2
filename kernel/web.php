@@ -20,8 +20,12 @@ addGroup('/book/{action}/{id}', 'CatalogController', [
     'setNameRoute' => 'single_book'
 ]);
 
-addGroup('/ajax/{action}', 'AjaxCatalogController', [
+addGroup('/ajax-c/catalog/{action}', 'AjaxCatalogController', [
     'setNameRoute' => 'ajax_book'
+]);
+
+addGroup('/ajax-a/admin/{action}', 'AjaxAdminController', [
+    'setNameRoute' => 'ajax_admin'
 ]);
 
 addGroup('/admin-g/{object}/{action}', 'AdminController', [

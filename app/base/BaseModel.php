@@ -166,11 +166,10 @@ function buildQuery($options)
     global $query, $mysqli;
 
     $query = array();
+
     foreach ($options as $callback => $params)
-    {
-        if(function_exists($callback))
-            $callback($params);
-    }
+        call($callback, $params);
+
     requiredOptions();
 
     return $query;
@@ -198,23 +197,45 @@ function Get($model = '', $queryFunction = '', $params = array())
             $sql .= $query[$option];
     }
     $sql .= '; ';
+ /*   echo '<pre>';
+    print_r($sql); die;*/
 
     return fetchAll($sql);
 }
 
 function actionModel($model, $queryFunction = '', $params = array())
 {
+
     if(incModel($model))
     {
-        if(function_exists($queryFunction))
-            $queryFunction($params);
-
         // основные параметры модели, едины для все функций
-        if(function_exists($model))
-            $model();
 
+        call($model, true);
+
+        // вызываем саму функцию
+        call($queryFunction, $params);
+
+        // строим запрос
+        call($model, false);
         return true;
     }
+}
+
+function mainFuncModel($options, $position = true)
+{
+    global $query;
+
+    switch ((bool)$position)
+    {
+        case false:
+            buildQuery($query);
+            break;
+        default:
+        case true:
+            $query = $options;
+            break;
+    }
+
 }
 
 /**
@@ -275,4 +296,70 @@ function setLikes()
             unset($query[$old_place]);
         }
 
+}
+
+function Create($data)
+{
+    global $query;
+
+    if(!array_key_exists('addFields', $query))
+        return NULL;
+
+    table($query['table']);
+    $addFields = $query['addFields'];
+
+    // строка из вопросительный знаков через запятую для подставления значений
+    $questions = implode(',', array_fill(0, count($addFields), '?'));
+
+    $sql = "INSERT INTO " . $query['table'] . ' '." (";
+    $sql .= implode(", ", $addFields);
+    $sql .= ") VALUES ($questions);";
+
+    return simpleExec($sql, $data);
+}
+
+function Delete($data)
+{
+    global $query;
+
+    table($query['table']);
+
+    $sql = "DELETE FROM " . $query['table'] . " WHERE ";
+
+    foreach ($data as $col => $value)
+    {
+        $conditions[] = $col.' = ?';
+    }
+    $sql .= implode(' AND ', $conditions);
+    $sql .= ';';
+
+    return simpleExec($sql, $data);
+}
+function Update($data)
+{
+    global $query;
+
+    table($query['table']);
+
+    $sql = "UPDATE " . $query['table'] . " SET ";
+
+    foreach ($data as $col => $value)
+    {
+        if($col != $query['findField'])
+            $newValues[] = "$col = ?";
+
+    }
+    $sql .= implode(", ", $newValues);
+    $sql .= " WHERE " . $query['findField'] . '=' . $data[$query['findField']];
+    unset($data[$query['findField']]);
+    $sql .= '; ';
+
+    return simpleExec($sql, $data);
+}
+
+
+
+function getModelHasBook($object)
+{
+    return 'Book'. ucfirst($object) . 's';
 }
