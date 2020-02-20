@@ -2,6 +2,7 @@
 
 require_once $mode.'kernel/lib/CustomFunctions.php';
 require_once $mode.'app/config.php';
+require_once $mode.'kernel/lib/Mailer.php';
 require_once $mode.'app/base/BaseController.php';
 require_once $mode.'app/base/BaseModel.php';
 require_once $mode.'kernel/Router.php';

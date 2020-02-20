@@ -10,7 +10,8 @@ function actionEdit($params)
     if(!isset($params[2]) || $params[2] == '')
     {
         /** выводим страницу ошибки, но пока отсылаем на главную :) */
-        return actionIndex();
+        /** upd: добавил вывод ошибок :) */
+        return renderError('404');
     }
     $id = $params[2];
 
@@ -20,6 +21,9 @@ function actionEdit($params)
     $book = Get('Books', 'getBookSingleEdit', [
         'id' => $id
     ]);
+    if(empty($book))
+        return renderError('404');
+
     $book = array_shift($book);
 
     foreach (['genres', 'authors'] as $obj)

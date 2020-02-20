@@ -1,4 +1,4 @@
-<section class="container padding-top" id="admin-table">
+<section class="container padding-top" id="object-table">
     <?php if(empty($books)): ?>
         <div class="alert alert-info" role="alert">
             Не добавлено еще ни одной книги
@@ -31,7 +31,7 @@
                            title="Edit" class="text-success"><i class="fas fa-edit"></i></a>
 
                         <a href="javascript:void(0)" title="Delete" class="text-success"
-                           onclick="deleteAjax(<?=$book['id']?>, '<?=$book['title']?>', 'book', successDeleteBook)">
+                           onclick="deleteAjax(<?=$book['id']?>, '<?=$book['title']?>', 'book', successAjaxBook)">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </td>
@@ -46,6 +46,10 @@
         <?php endif; ?>
 
         <h3 class="text-secondary d-flex justify-content-center">Удаленные книги &nbsp;<i class="text-danger fas fa-minus-circle"></i></h3>
+        <form id="form-books" style="display: none">
+            <label for="author-name"  class="col-form-label">Название:</label>
+            <input type="hidden" name="id">
+        </form>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -56,6 +60,7 @@
             </tr>
             </thead>
             <tbody>
+
             <?php $count=0; foreach($books as $book): ?>
                 <?php if($book['status'] == BOOK_STATUS_ACTIVE){continue;}?>
                 <tr>
@@ -64,11 +69,8 @@
                     <td><?=$book['title']?></td>
                     <td><?=$book['created_at']?></td>
                     <td>
-                        <form action="" id="form">
-                            <input type="hidden" name="id" value="<?=$book['id']?>">
-                        </form>
-                        <a href="javascript:void(0)" title="Retrieve" class="text-success"
-                           onclick="objectAction('book', 'retrieve', successDeleteBook)">
+                        <a href="javascript:void(0)" title="Retrieve" class="btn-retrieve text-success"
+                           data-id="<?=$book['id']?>">
                             <i class="fas fa-plus-circle"></i>
                         </a>
                     </td>

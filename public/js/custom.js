@@ -8,20 +8,8 @@ window.onload = function () {
         modal.find('.modal-title').text("Заказать " + book);
     });
 
-    $('.edit-author-btn').each(function (i, e) {
-
-        $(e).click(function () {
-            var button = $(this); // Button that triggered the modal
-            var name = button.data('name'); // Extract info from data-* attributes
-            var id = button.data('id'); // Extract info from data-* attributes
-            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-            var modal = $('#exampleModalCenter');
-            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-            modal.find('#author-name').val(name);
-            modal.find('input[name="id"]').val(id);
-        });
-    });
-
+    setValuesForModelEdit();
+    setValuesForBooks()
 
     $('#exampleModal').on('show.bs.modal', function (event) {
 
@@ -51,23 +39,51 @@ window.onload = function () {
             inputs[i].value = decodeURI(values[i]);
     }
 };
-function orderBook(book_info) {
 
-    var data = {};
-    var inputs = document.querySelectorAll("input.form-control");
-    for(let i = 0; i < inputs.length; i++)
-    {
-        data[inputs[i].name] = inputs[i].value;
-    }
+function setValuesForModelEdit() {
+    $('.edit-object-btn').each(function (i, e) {
 
+        $(e).click(function () {
+
+            var button = $(this); // Button that triggered the modal
+            var name = button.data('name'); // Extract info from data-* attributes
+            var id = button.data('id'); // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            var modal = $('#exampleModalCenter');
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            modal.find('#object-name').val(name);
+            modal.find('input[name="id"]').val(id);
+        });
+    });
+}
+
+function setValuesForBooks() {
+    $('.btn-retrieve').each(function (i, e) {
+
+        $(e).click(function () {
+            var button = $(this); // Button that triggered the modal
+
+            var id = button.data('id'); // Extract info from data-* attributes
+            var form = $('#form-books')// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            $(form).find('input[name="id"]').val(id);
+
+            // Вызов сделян прямо в этом событии, вместо атрибута onclick
+            // в самом шаблоне, так как onclick срабатывает первым
+            // а нам нужно наоборот
+            objectAction('book', 'retrieve', successAjaxBook, '#form-books');
+        });
+    });
+}
+
+
+function orderBook() {
+
+    var values = $('#order-book').serializeArray();
 
     $.ajax({
-        url: '/ajax/ajaxOrder',
+        url: '/ajax-c/catalog/ajaxOrder',
         method: 'POST',
-        data: {
-            book: book_info,
-            inp: data
-        },
+        data: values,
         success: function (data) {
             $('.modal-backdrop').remove();
             modalHide($('#exampleModal'));
@@ -129,9 +145,10 @@ function objectAction(objectName, action, callback, selector = '#form') {
         method: 'POST',
         data: values,
         success: function (data) {
-            if(data.length > 0)
+            data = JSON.parse(data);
+            if(data.success)
             {
-                callback(data, selector);
+                callback(data.html, selector);
             }
         },
         error: function (data) {
@@ -141,31 +158,23 @@ function objectAction(objectName, action, callback, selector = '#form') {
 
 }
 
-function successDeleteBook(data)
+function successAjaxBook(data)
 {
-    $('#admin-table').html(data);
+    $('#object-table').html(data);
+    setValuesForBooks();
 }
 function callbackAjaxSuccess(data, clearForm)
 {
+    $('#object-table').html(data);
+
     if(clearForm === '#form')
-        $('#inlineFormInputName').val('');
-    else
     {
-        $('.edit-author-btn').each(function (i, e) {
-            $(e).click(function () {
-                var button = $(this); // Button that triggered the modal
-                var name = button.data('name'); // Extract info from data-* attributes
-                var id = button.data('id'); // Extract info from data-* attributes
-                // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                var modal = $('#exampleModalCenter');
-                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-                modal.find('#author-name').val(name);
-                modal.find('input[name="id"]').val(id);
-            });
-        });
+        // очищаем поле ввода
+        $('#inlineFormInputName').val('');
     }
 
-
+    // привязываем новый обьект к вызову модели со своими данными
+    setValuesForModelEdit();
 }
 
 function ucfirst(string) {
@@ -192,8 +201,6 @@ function searchBooks(e)
             console.log(data);
         }
     });
-
-
 
     //location.href = "/catalog-g/" + values.join('/');
 }

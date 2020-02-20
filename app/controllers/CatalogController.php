@@ -22,6 +22,9 @@ function actionView($params)
         'id' => $id
     ]);
 
+    if(empty($book))
+        return renderError('404');
+
     return render('catalog/single.tpl.php', [
         'book' => $book[0]
     ]);

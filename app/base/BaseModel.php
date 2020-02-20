@@ -197,9 +197,6 @@ function Get($model = '', $queryFunction = '', $params = array())
             $sql .= $query[$option];
     }
     $sql .= '; ';
- /*   echo '<pre>';
-    print_r($sql); die;*/
-
     return fetchAll($sql);
 }
 

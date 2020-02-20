@@ -27,6 +27,28 @@ function safeDeleteBook($data)
     actionModel('Books', 'Update', $data);
 }
 
+function safeRetrieveBook($data)
+{
+    global $query;
+    $data = array_merge($data, $query['activeByFields']);
+
+    actionModel('Books', 'Update', $data);
+}
+
+function shortInfo($data)
+{
+    global $query;
+
+    $query['select'] = [
+        'title'     =>'b.title',
+        'desc_short' => 'b.desc_short',
+    ];
+    $query['whereEqually'] = [
+        ['b.status', 'active'],
+        ['b.id', $data['id']]
+    ];
+}
+
 function getAllBooks()
 {
     global $query;
@@ -67,6 +89,7 @@ function getBookSingleEdit($params)
         'orderBy' => 'b.title'
     ];
 }
+
 function createBook()
 {
     $data = array();
@@ -128,7 +151,6 @@ function saveBook($id)
 }
 
 
-
 function updateObjects($objects, &$data)
 {
     foreach ($objects as $obj)
@@ -153,8 +175,6 @@ function updateObjects($objects, &$data)
     unset($data['src']);
     unset($data['upd']);
 }
-
-
 
 function updateObject($result, $obj, $id)
 {

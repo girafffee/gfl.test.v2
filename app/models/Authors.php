@@ -10,7 +10,8 @@ function Authors($pos = true)
         ],
         'table' => 'authors a',
         'orderBy' => 'a.name',
-        'addFields' => ['name']
+        'addFields' => ['name'],
+        'findField' => 'id'
     ], $pos);
 
 }

@@ -10,6 +10,7 @@ function Genres($position = true)
         ],
         'table' => 'genres g',
         'orderBy' => 'g.name',
-        'addFields' => ['name']
+        'addFields' => ['name'],
+        'findField' => 'id'
     ], $position);
 }

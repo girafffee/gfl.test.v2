@@ -59,23 +59,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="recipient-email" class="col-form-label">Ваш Email:</label>
-                    <input type="email" class="form-control" name="email" id="recipient-email">
+            <form id="order-book">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-email" class="col-form-label">Ваш Email:</label>
+                        <input type="email" class="form-control" name="email" id="recipient-email">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Фио:</label>
+                        <input type="text" class="form-control" name="fio" id="recipient-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-count" class="col-form-label">Колличество:</label>
+                        <input type="number" class="form-control" name="count" id="recipient-count" min="1" max="15">
+                    </div>
+                    <input type="hidden" name="id" value="<?=$book['id']?>">
                 </div>
-                <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Фио:</label>
-                    <input type="text" class="form-control" name="fio" id="recipient-name">
-                </div>
-                <div class="form-group">
-                    <label for="recipient-count" class="col-form-label">Колличество:</label>
-                    <input type="number" class="form-control" name="count" id="recipient-count" min="1" max="15">
-                </div>
-            </div>
+            </form>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="orderBook(<?=$book['id']?>)">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="orderBook()">Отправить</button>
             </div>
         </div>
     </div>

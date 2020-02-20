@@ -30,7 +30,7 @@
                        title="Edit" class="text-success"><i class="fas fa-edit"></i></a>
 
                     <a href="javascript:void(0)" title="Delete" class="text-success"
-                       onclick="deleteAjax(<?=$book['id']?>, '<?=$book['title']?>', 'book', successDeleteBook)">
+                       onclick="deleteAjax(<?=$book['id']?>, '<?=$book['title']?>', 'book', successAjaxBook)">
                         <i class="fas fa-trash-alt"></i>
                     </a>
                 </td>
@@ -68,7 +68,7 @@
                         <input type="hidden" name="id" value="<?=$book['id']?>">
                     </form>
                     <a href="javascript:void(0)" title="Retrieve" class="text-success"
-                       onclick="objectAction('book', 'retrieve', successDeleteBook)">
+                       onclick="objectAction('book', 'retrieve', successAjaxBook)">
                         <i class="fas fa-plus-circle"></i>
                     </a>
                 </td>

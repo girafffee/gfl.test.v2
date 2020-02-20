@@ -13,7 +13,7 @@
             </div>
         </div>
     </form>
-    <div id="authors-table">
+    <div id="object-table">
         <?php if(empty($authors)): ?>
             <div class="alert alert-info" role="alert">
                 Не добавлено еще ни одного автора
@@ -35,7 +35,7 @@
                         <td><?=$author['name']?></td>
                         <td><?=$author['created_at']?></td>
                         <td>
-                            <a class="edit-author-btn" href="javascript:void(0)"
+                            <a class="edit-object-btn" href="javascript:void(0)"
                                title="Edit" data-toggle="modal"
                                data-name="<?=$author['name']?>"
                                data-id="<?=$author['id']?>"
@@ -70,7 +70,7 @@
                 <div class="form-group">
                     <form id="author-update">
                         <label for="author-name" class="col-form-label">ФИО:</label>
-                        <input type="email" class="form-control" name="name" id="author-name">
+                        <input type="text" class="form-control" name="name" id="object-name">
                         <input type="hidden" name="id">
                     </form>
                 </div>

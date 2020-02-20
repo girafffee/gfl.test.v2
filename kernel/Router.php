@@ -113,10 +113,8 @@ function callController()
             }
         }
     }
-    //else
-    //    header("HTTP/1.1 404 Not Found");
 
-    return NULL;
+    return renderError('404');
 }
 function callActionBy($route)
 {
@@ -129,15 +127,25 @@ function callActionBy($route)
         $params = array_key_exists('params', $route) ? $route['params'] : array();
 
         if($action && function_exists($action))
-            return $action($params);
+        {
+            // сохраняем или проверяем админа в сессии, если контроллер определен
+            // в функции BaseController::checkAccessControllers
+            if(setOrCheckAdmin($route['controller']))
+                return $action($params);
+            else
+                return renderError('403');
+
+        }
     }
-    return NULL;
+    return renderError('404');
 }
 
 function checkArgsRoute($name)
 {
     global $routes;
-    return (count($routes[$name]['params']) == count($routes[$name]['path']));
+
+    if(array_key_exists('params', $routes[$name]) && array_key_exists('path', $routes[$name]))
+        return (count($routes[$name]['params']) == count($routes[$name]['path']));
 }
 
 function route($name, $params = array())

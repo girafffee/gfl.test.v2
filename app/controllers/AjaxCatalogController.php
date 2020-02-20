@@ -1,5 +1,28 @@
 <?php
 
+function actionAjaxOrder()
+{
+    if(empty($_POST))
+        return false;
+
+    $data = array();
+    filterData($data);
+
+    $book = Get('Books', 'shortInfo', $data)[0];
+
+    $mail_info = [
+        'subject'   => 'New order',
+        'body'      => render('mail/book_order.php', [
+            'book'      => $book,
+            'customer'  => $data
+        ]),
+        'altBody'   => ''
+    ];
+
+    if(sendEmailAdmin($mail_info))
+        returnAjaxResult(true);
+}
+
 function sortDataForSearch(&$data)
 {
     $columns = ['genres', 'authors'];
@@ -28,13 +51,10 @@ function actionAjaxSearchBooks()
     $genres = All(['table' => 'genres']);
     $authors = All(['table' => 'authors']);
 
-    $content['html'] = render('ajax/catalog.tpl.php', [
+
+    renderAjax('ajax/catalog.tpl.php', [
         'authors' => $authors,
         'genres' => $genres,
         'books' => $books
     ]);
-    $content['success'] = true;
-
-    echo json_encode($content, JSON_UNESCAPED_UNICODE);
-    die;
 }
